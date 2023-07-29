@@ -31,10 +31,20 @@ def password_generator(username, site, length, secret_key):
 
     return ''.join(password)
 
+# Check if secret_key environment variable exists
+secret_key = os.getenv('secret_key')
+if secret_key is None:
+    with open('.env', 'w') as env_file:
+        secret_key = input("Please enter a secret key: ")
+        env_file.write(f"secret_key={secret_key}\n")
+        print("Secret key saved in .env file")
+
+# Load secret key from .env file
+load_dotenv()
+secret_key = os.getenv('secret_key')
 
 username = input("Username: ")
 site = input("Site: ").lower()
 length = int(input("Length: "))
-secret_key = os.getenv('secret_key')
 
 print(f"Password: {password_generator(username, site, length, secret_key)}")
